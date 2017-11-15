@@ -24,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.facebooklogin.LoginActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,7 +45,7 @@ import static com.example.android.architecture.blueprints.todoapp.custom.action.
 import static junit.framework.Assert.fail;
 
 /**
- * Tests for the {@link DrawerLayout} layout component in {@link TasksActivity} which manages
+ * Tests for the {@link DrawerLayout} layout component in {@link LoginActivity} which manages
  * navigation within the app.
  */
 @RunWith(AndroidJUnit4.class)
@@ -59,8 +60,8 @@ public class AppNavigationTest {
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<TasksActivity> mActivityTestRule =
-            new ActivityTestRule<>(TasksActivity.class);
+    public ActivityTestRule<LoginActivity> mActivityTestRule =
+            new ActivityTestRule<>(LoginActivity.class);
 
     @Test
     public void clickOnStatisticsNavigationItem_ShowsStatisticsScreen() {
@@ -114,7 +115,7 @@ public class AppNavigationTest {
 
     @Test
     public void backFromTasksScreenAfterStats_ExitsApp() {
-        // This test checks that TasksActivity is a parent of StatisticsActivity
+        // This test checks that FacebookLoginActivity is a parent of StatisticsActivity
 
         // Open the stats screen
         openStatisticsScreen();

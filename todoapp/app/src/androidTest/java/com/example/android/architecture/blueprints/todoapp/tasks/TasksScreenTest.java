@@ -29,6 +29,7 @@ import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.TestUtils;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
+import com.example.android.architecture.blueprints.todoapp.facebooklogin.LoginActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -79,8 +80,8 @@ public class TasksScreenTest {
      * blocks of Junit tests.
      */
     @Rule
-    public ActivityTestRule<TasksActivity> mTasksActivityTestRule =
-            new ActivityTestRule<TasksActivity>(TasksActivity.class) {
+    public ActivityTestRule<LoginActivity> mTasksActivityTestRule =
+            new ActivityTestRule<LoginActivity>(LoginActivity.class) {
 
                 /**
                  * To avoid a long list of tasks and the need to scroll through the list to find a

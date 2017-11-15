@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package com.example.android.architecture.blueprints.todoapp.tasks;
+package com.example.android.architecture.blueprints.todoapp.facebooklogin;
 
 import android.content.Intent;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
@@ -26,21 +30,36 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity;
-import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
+import com.example.android.architecture.blueprints.todoapp.tasks.TasksPresenter;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
-public class TasksActivity extends AppCompatActivity {
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class FacebookLoginActivity extends AppCompatActivity {
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
     private DrawerLayout mDrawerLayout;
 
     private TasksPresenter mTasksPresenter;
+
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+
+    PackageInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +81,21 @@ public class TasksActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
-        TasksFragment tasksFragment =
-                (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        /*
+        LoginFragment tasksFragment =
+                (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (tasksFragment == null) {
             // Create the fragment
-            tasksFragment = TasksFragment.newInstance();
+            tasksFragment = LoginFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
         }
+        */
 
+        /*
         // Create the presenter
         mTasksPresenter = new TasksPresenter(
-                Injection.provideTasksRepository(getApplicationContext()), tasksFragment);
+                Injection.provideTasksRepository(getApplicationContext()), LoginFragment);
 
         // Load previously saved state, if available.
         if (savedInstanceState != null) {
@@ -81,11 +103,58 @@ public class TasksActivity extends AppCompatActivity {
                     (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
             mTasksPresenter.setFiltering(currentFiltering);
         }
+        */
+
+        callbackManager = CallbackManager.Factory.create();
+        loginButton = findViewById(R.id.login_button);
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                //
+                Toast.makeText(getApplicationContext(), R.string.success_login, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        try {
+            info = getPackageManager().getPackageInfo("com.example.android.architecture.blueprints.todoapp", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                //String something = new String(Base64.encodeBytes(md.digest()));
+                Log.e("hash key", something);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("no such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("exception", e.toString());
+        }
+
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
+      //  outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
 
         super.onSaveInstanceState(outState);
     }
@@ -112,7 +181,7 @@ public class TasksActivity extends AppCompatActivity {
                                 break;
                             case R.id.statistics_navigation_menu_item:
                                 Intent intent =
-                                        new Intent(TasksActivity.this, StatisticsActivity.class);
+                                        new Intent(FacebookLoginActivity.this, StatisticsActivity.class);
                                 startActivity(intent);
                                 break;
                             default:

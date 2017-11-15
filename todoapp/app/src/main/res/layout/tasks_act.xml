@@ -20,7 +20,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tasks.TasksActivity"
+    tools:context=".facebooklogin.LoginActivity"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -52,6 +52,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+/>
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_add_task"
                 android:layout_width="wrap_content"
@@ -60,7 +68,8 @@
                 android:src="@drawable/ic_add"
                 app:fabSize="normal"
                 app:layout_anchor="@id/contentFrame"
-                app:layout_anchorGravity="bottom|right|end" />
+                app:layout_anchorGravity="bottom|right|end"
+                android:visibility="gone"/>
         </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>

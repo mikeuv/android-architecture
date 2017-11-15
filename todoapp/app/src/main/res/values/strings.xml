@@ -15,6 +15,13 @@
   -->
 
 <resources>
+    <string name="facebook_app_id">1686900908051056</string>
+    <string name="fb_login_protocol_scheme">fb1686900908051056</string>
+
+    <string name="cancel_login">Login cancelado</string>
+    <string name="error_login">Login error</string>
+    <string name="success_login">Login realizado</string>
+
     <string name="app_name">TO-DO-MVP</string>
     <string name="add_task">New TO-DO</string>
     <string name="edit_task">Edit TO-DO</string>
@@ -55,5 +62,6 @@
     <string name="no_tasks_completed">You have no completed TO-DOs!</string>
     <string name="no_tasks_add">Add a TO-DO item +</string>
     <string name="refresh">Refresh</string>
+    <string name="title_activity_custom_tab">CustomTabActivity</string>
 
 </resources>

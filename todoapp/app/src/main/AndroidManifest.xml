@@ -12,36 +12,58 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.android.architecture.blueprints.todoapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".facebooklogin.App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
         <activity
-            android:name="com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity"
+            android:name=".facebooklogin.FacebookLoginActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.OverlapSystemBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity" />
-        <activity android:name="com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity" />
         <activity
-            android:name="com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity"
-            android:parentActivityName=".tasks.TasksActivity"
+            android:name=".facebooklogin.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".taskdetail.TaskDetailActivity" />
+        <activity android:name=".addedittask.AddEditTaskActivity" />
+        <activity
+            android:name=".statistics.StatisticsActivity"
+            android:parentActivityName=".facebooklogin.FacebookLoginActivity"
             tools:ignore="UnusedAttribute">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".tasks.TasksActivity" />
+                android:value=".facebooklogin.FacebookLoginActivity" />
         </activity>
     </application>
 
